@@ -1,0 +1,54 @@
+﻿# User guide for </>'s problem set solver
+This project is one that aims to simplify the process of doing math exercises.
+Below is a guide that details how to operate the solver to achieve the desired results
+If a section does not have a use guide, it is likely not done
+- ## 0. polar coordinates and vectors
+	- ### 0.0. rectagular to polar 	
+		- How to use:
+			- type X or R value, hit `Enter`, type Y or U value, hit `Enter`
+		- Example: $5U - 3R$
+			- type 5, hit `Enter`, type -3, hit `Enter`
+	- ### 0.1. polar to rectangular 
+		- How to use:
+			- type radius value, hit `Enter`, type $\theta$ value, hit `Enter`
+		- Example: $5\angle300\degree$
+			- type 5, hit `Enter`, type 300, hit `Enter`
+	- ### 0.2. vector addition
+		- How to use:
+			- type first radius value, hit `Enter`, type first $\theta$ value, hit `Enter`
+			- repeat for second set of values
+		- Example: $5\angle300\degree + 6\angle240\degree$
+			- type 5, hit `Enter`, type 300, hit `Enter`
+			- type 6, hit `Enter`, type 240, hit `Enter`
+- ## 1. rectangular coordinates and points
+	- ### 1.0. distance between two points
+		- How to use:
+			- type first point as ordered pair, hit `Enter`, type second point as ordered pair, hit `Enter`
+		- Example: distance between (0, 1) and (6, 4)
+			- type 0,1 , hit `Enter`, type 6,4 , hit `Enter`
+	- ### 1.1. equation of a line through two points
+	- ### 1.2. equation of a line through a point and perpendicular to another line 
+- ## 2. variations
+	- ### 2.0. direct variation
+	- ### 2.1. indirect variation
+- ## 3. abstract equations
+	- ### 3.0. find variable
+	- ### 3.1. simplify fractional equation
+- ## 4. roots
+	- ### 4.0. roots in roots
+	- ### 4.1. roots in denominators
+- ## 5. multi-equational problems / substitution
+	- ### 5.0. 2 simulatneous equations
+	- ### 5.1. advanced substitution
+- ## 6. volume concentration problems
+	- 
+- ## 7. Combined gas law problems
+	- ### 7.0. Regular
+	- ### 7.1. Constant Pressure
+	- ### 7.2. Constant Volume
+	- ### 7.3. Constant Temperature
+- ## 8. 30-60-90 triangles
+	- 
+- ## 9. linear regression
+	- ### 9.0. y = mx + b
+
