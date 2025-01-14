@@ -5,17 +5,8 @@ import webbrowser
 import time
 
 
-# TODO: add all the things
-# TODO: add arrow controls
-# TODO: colours
-# TODO: user manual
-
-# COLOURS:
-# reset: \x1b[0m
-# text: light orange/yellow \x1b[38;5;227m (or \x1b[38;5;220m)
-# lines: orange \x1b[38;5;208m
-# selected item: green \x1b[38;5;40m
-# error: red \x1b[38;5;160m
+# TODO: add all the types of problems
+# TODO: colours in working
 
 reset_colour = "\x1b[0m"
 text_colours = ["\x1b[38;5;227m", "\x1b[38;5;220m"]
@@ -26,8 +17,6 @@ error_colour = "\x1b[38;5;160m"
 
 def open_user_manual():
     webbrowser.open("user_manual.pdf")
-
-enter_is_pressed = False
 
 
 problem_subchoices = {

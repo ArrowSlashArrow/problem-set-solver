@@ -2,10 +2,11 @@ import getpass
 import numpy as np
 
 error_number_msg = "Invalid input. Input must be a number"
-
 error_pair_msg = "Invalid input. Input must be an x, y pair"
+error_bool_msg = "Invalid input. Input must be a boolean (True or False)"
 
 RAD2DEG = 180 / np.pi
+
 
 # root is an int (whats in the root)
 # returns whatever is in the root and the factor
@@ -21,10 +22,27 @@ def simplify_root(root):
         else:
             factor += 1
     return outside, inside
+
+
+class Root:
+
+    def __init__(self, inside, outside):
+        self.outside, self.inside = simplify_root(inside * outside * outside)
+        self.outside = ifint(self.outside)
+        self.inside = ifint(self.inside)
+
+    def __str__(self):
+        outside_str = "" if self.outside == 1 else self.outside
+        return f"{outside_str}√{self.inside}"
+
+
 # utitilies
 
+
 def ifint(x):
-    return int(x) if x.is_integer() else x
+    if isinstance(x, float):
+        return int(x) if x.is_integer() else x
+    return x
 
 
 def wait():
@@ -34,10 +52,10 @@ def wait():
 def get_num(msg="", err_msg="Invaild input"):
     error = False
     while True:
-        inp = input(msg)
-
         if error:
             print(err_msg)
+        inp = input(msg)
+
         try:
             inp = float(inp)
         except ValueError:
@@ -49,20 +67,39 @@ def get_num(msg="", err_msg="Invaild input"):
 def get_pair(msg="", err_msg="Invaild input"):
     error = False
     while True:
+        if error:
+            print("\x1b[A\r\x1b[A\r" + err_msg)
+
         inp = input(msg)
         inp.replace(" ", "")
         inp.replace("(", "")
         inp.replace(")", "")
 
-        if error:
-            print("\x1b[A\r\x1b[A\r" + err_msg)
         try:
             inp1 = float(inp.split(",")[0])
             inp2 = float(inp.split(",")[1])
         except ValueError:
             error = True
+        except IndexError:
+            error = True
         else:
             return ifint(inp1), ifint(inp2)
+
+
+def get_bool(msg="", err_msg="Invaild input"):
+    error = False
+    while True:
+        if error:
+            print("\x1b[A\r\x1b[A\r" + err_msg)
+
+        inp = input(msg)
+
+        if inp.lower() == "true":
+            return True
+        elif inp.lower() == "false":
+            return False
+        else:
+            error = True
 
 
 def working():
@@ -79,15 +116,14 @@ def cart_to_polar():
 
     working()
 
-    r = round((x * x + y * y) ** 0.5, 3)
+    r = round(np.sqrt(x * x + y * y), 3)
     r = ifint(r)
 
     # radius
     print(f"r = √({x}² + {y}²)")
     print(f"r = √({x * x} + {y * y})")
     print(f"r = √{x * x + y * y}")
-    print(f"r = {r}\n")  # TODO: this should be simplified root, not decimal
-
+    print(f"r = {r}\n")
     # figure this out
     theta = 0
 
@@ -99,22 +135,22 @@ def cart_to_polar():
     # Q1
     if x > 0 and y > 0:
         theta = rho
-        print("We are in Q1, so\nθ = ρ")
+        print("We are in Q1, so θ = ρ")
 
     # Q2
     if x < 0 and y > 0:
         theta = 180 - rho
-        print("We are in Q2, so\nθ = 180 - ρ")
+        print("We are in Q2, so θ = 180 - ρ")
 
     # Q3
     if x < 0 and y < 0:
         theta = 180 + rho
-        print("We are in Q3, so\nθ = 180 + ρ")
+        print("We are in Q3, so θ = 180 + ρ")
 
     # Q4
     if x > 0 and y < 0:
         theta = 360 - rho
-        print("We are in Q4, so\nθ = 360 - ρ")
+        print("We are in Q4, so θ = 360 - ρ")
 
     theta = ifint(round(theta, 3))
     print(f"θ = {theta}")
@@ -164,6 +200,10 @@ def vector_addition():
     r2 = get_num("Second r value: ", error_number_msg)
     theta2 = get_num("Second θ value (degrees): ", error_number_msg)
 
+    cartesian = get_bool(
+        "Should the output be in rectangular coordinates? (True or False): ",
+        error_bool_msg)
+
     working()
 
     print(f"v₁ = r₁ * cos(θ₁), r₁ * sin(θ₁)")
@@ -188,11 +228,59 @@ def vector_addition():
 
     print(f"vf = {xf}, {yf}")
 
-    answer()
+    if not cartesian:
+        # vf = num1, num2
+        r = round(np.sqrt(xf * xf + yf * yf), 6)
+        r = ifint(r)
 
-    sign = "-" if yf < 0 else "+"
-    print("xî + yĵ")
-    print(f"{round(xf, 3)}î {sign} {round(abs(yf), 3)}ĵ")
+        # radius
+        print(f"\nr = √({xf}² + {yf}²)")
+        print(f"r = √({round(xf * xf, 6)} + {round(yf * yf, 6)})")
+        print(f"r = √{r}")
+        print(f"r = {np.sqrt(r)}\n")
+        theta = 0
+
+        rho = RAD2DEG * np.arctan(abs(yf) / abs(xf))
+
+        print(f"ρ = tan⁻¹({abs(yf)} / {abs(xf)})")
+        print(f"ρ = {round(np.arctan(abs(yf) / abs(xf)), 3)}\n")
+
+        # Q1
+        if xf > 0 and yf > 0:
+            theta = rho
+            print("We are in Q1, so θ = ρ")
+
+        # Q2
+        if xf < 0 and yf > 0:
+            theta = 180 - rho
+            print("We are in Q2, so θ = 180 - ρ")
+
+        # Q3
+        if xf < 0 and yf < 0:
+            theta = 180 + rho
+            print("We are in Q3, so θ = 180 + ρ")
+
+        # Q4
+        if xf > 0 and yf < 0:
+            theta = 360 - rho
+            print("We are in Q4, so θ = 360 - ρ")
+
+        theta = ifint(round(theta, 3))
+        print(f"θ = {theta}")
+
+        answer()
+
+        # form and answer
+        print(f"r∠ θ")
+        print(f"{round(r, 3)}∠ {theta}°")
+        pass
+
+    else:
+        answer()
+
+        sign = "-" if yf < 0 else "+"
+        print("xî + yĵ")
+        print(f"{round(xf, 3)}î {sign} {round(abs(yf), 3)}ĵ")
 
     wait()
 
@@ -201,8 +289,7 @@ def rect_distance():
     x1, y1 = get_pair("First coordinate point: ", error_pair_msg)
     x2, y2 = get_pair("Second coordinate point: ", error_pair_msg)
 
-
-    raw_dist = (x1 - x2) ** 2 + (y1 - y2) ** 2
+    raw_dist = (x1 - x2)**2 + (y1 - y2)**2
 
     working()
 
@@ -210,13 +297,12 @@ def rect_distance():
     print(f"d = √(({x1} - {x2})² + ({y1} - {y2})²)")
     print(f"d = √({x1 - x2}² + {y1 - y2}²)")
     print(f"d = √({(x1 - x2) ** 2} + {(y1 - y2) ** 2})")
-    print(f"d = √{(x1 - x2) ** 2 + (y1 - y2) ** 2}")
-    outside, inside = simplify_root(raw_dist)
-    out_str, in_str = f"{outside}" if outside != 1 else "", f"√{inside}" if inside != 1 else ""
+    print(f"d = √{raw_dist}")
     answer()
-    print(f"d = {out_str}{in_str}\n")
+    print(f"d = {Root(raw_dist, 1)}\n")
 
     wait()
+
 
 def line_equation():
     x1, y1 = get_pair("First coordinate point: ", error_pair_msg)
@@ -224,18 +310,32 @@ def line_equation():
 
     working()
 
+    print("m = (y₂ - y₁) / (x₂ - x₁)")
+    print(f"m = ({y2} - {y1}) / ({x2} - {x1})")
+    print(f"m = {y2 - y1} / {x2 - x1}")
+
+    n = y2 - y1
+    d = x2 - x1
+
+    print(f"y = {n} / {d} x + b")
+
+
     # m = y2 - y1 / x2 - x1
+
 
 def line_equation_perpendicular():
     pass
 
 
 def tsn_trinagles():
-    c = get_num("Hypotenuse side measurement (type u for unknown): ", error_number_msg)
+    c = get_num("Hypotenuse side measurement (type u for unknown): ",
+                error_number_msg)
 
-    b = get_num("Longer side measurement (type u for unknown): ", error_number_msg)
+    b = get_num("Longer side measurement (type u for unknown): ",
+                error_number_msg)
 
-    a = get_num("Shorter side measurement (type u for unknown): ", error_number_msg)
+    a = get_num("Shorter side measurement (type u for unknown): ",
+                error_number_msg)
 
     working()
 
@@ -245,8 +345,8 @@ right triangle:
 
     .
    /|
-  / |
+:c/ | b:
  /  |
 ∠___⅃
-
+  a
 """
