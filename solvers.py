@@ -230,14 +230,14 @@ def vector_addition():
 
     if not cartesian:
         # vf = num1, num2
-        r = round(np.sqrt(xf * xf + yf * yf), 6)
+        r = round(np.sqrt(xf * xf + yf * yf), 3)
         r = ifint(r)
 
         # radius
         print(f"\nr = √({xf}² + {yf}²)")
         print(f"r = √({round(xf * xf, 6)} + {round(yf * yf, 6)})")
-        print(f"r = √{r}")
-        print(f"r = {np.sqrt(r)}\n")
+        print(f"r = √{round(xf * xf + yf * yf, 6)}")
+        print(f"r = {r}\n")
         theta = 0
 
         rho = RAD2DEG * np.arctan(abs(yf) / abs(xf))
